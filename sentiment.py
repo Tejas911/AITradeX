@@ -20,41 +20,21 @@ def load_documents_from_urls(urls):
 def perform_sentiment_analysis_multi(stock_ticker: str, invest_duration: int, last_3_days_prices: str = "") -> str:
     """
     Performs sentiment analysis for a given stock ticker by loading news content
-    from multiple Indian financial websites and then using an LLM (via LangChain) to generate a sentiment summary.
+    from multiple financial websites and then using an LLM to generate a sentiment summary.
     
     Args:
-        stock_ticker (str): The stock symbol (e.g., "RELIANCE", "TCS").
+        stock_ticker (str): The stock symbol (e.g., "TSLA", "AAPL").
         invest_duration (int): Investment duration in days
         last_3_days_prices (str): String containing last 3 days' prices
     
     Returns:
         str: The sentiment analysis result provided by the LLM.
     """
-    # Define a list of URLs for different Indian financial news sources related to the stock.
+    # Define a list of URLs for different financial news sources related to the stock.
     urls = [
         f"https://finance.yahoo.com/quote/{stock_ticker}/news",
         f"https://www.marketwatch.com/investing/stock/{stock_ticker}",
         f"https://www.cnbc.com/quotes/{stock_ticker}"
-
-        # Major Indian Financial News Sources
-        # f"https://economictimes.indiatimes.com/markets/stocks/news/{stock_ticker}",
-        # f"https://www.moneycontrol.com/india/stockpricequote/{stock_ticker}",
-        # f"https://www.business-standard.com/markets/stocks/{stock_ticker}",
-        
-        # Additional Indian Financial News Sources
-        # f"https://www.livemint.com/market/stock-market-news/{stock_ticker}",
-        # f"https://www.financialexpress.com/market/{stock_ticker}",
-        # f"https://www.ndtv.com/business/stock/{stock_ticker}",
-        
-        # Indian Stock Analysis Websites
-        # f"https://www.screener.in/company/{stock_ticker}",
-        # f"https://www.tickertape.in/stocks/{stock_ticker}",
-        # f"https://www.5paisa.com/stock-market/{stock_ticker}",
-        
-        # Indian Financial Analysis Platforms
-        # f"https://www.ambit.co/stock/{stock_ticker}",
-        # f"https://www.angelone.in/stock/{stock_ticker}",
-        # f"https://www.nseindia.com/get-quotes/equity?symbol={stock_ticker}"
     ]
     
     # Load documents from all defined URLs
@@ -68,7 +48,13 @@ def perform_sentiment_analysis_multi(stock_ticker: str, invest_duration: int, la
     
     # Add price history to the combined text
     if last_3_days_prices:
-        combined_text = f"Recent Price History:\n{last_3_days_prices}\n\nNews and Analysis:\n{combined_text}"
+        combined_text = f"""
+        Recent Price History:
+        {last_3_days_prices}
+        
+        News and Market Analysis:
+        {combined_text}
+        """
     
     # Use the sentiment analyzer from llm.py
     return sentiment_analyzer.analyze_sentiment(stock_ticker, combined_text, invest_duration)

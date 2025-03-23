@@ -1,5 +1,7 @@
 import yfinance as yf
 import datetime
+import pandas as pd
+from datetime import timezone, timedelta
 
 def get_user_input():
     # Collect stock ticker
@@ -33,20 +35,33 @@ def get_user_input():
     return ticker, invest_duration, training_period_days
 
 def fetch_stock_data(ticker, period_days):
-    # Calculate the start and end dates based on the training period
-    end_date = datetime.date.today()
+    # Get current date in US timezone
+    us_timezone = timezone(timedelta(hours=-4))  # EDT (UTC-4)
+    end_date = datetime.datetime.now(us_timezone).date()
     start_date = end_date - datetime.timedelta(days=period_days)
+    
+    # Ensure we're not trying to fetch future data
+    if start_date > end_date:
+        print("Error: Start date cannot be in the future.")
+        return pd.DataFrame()
+    
     print(f"Fetching data for {ticker} from {start_date} to {end_date}...")
     
-    # Fetch historical data from Yahoo Finance
-    stock_data = yf.download(ticker, start=start_date, end=end_date)
-    
-    if stock_data.empty:
-        print("No data found for the ticker. Please check the stock symbol and try again.")
-    else:
-        print("Data retrieval successful!")
-    
-    return stock_data
+    try:
+        # Fetch historical data from Yahoo Finance
+        stock_data = yf.download(ticker, start=start_date, end=end_date)
+        
+        if stock_data.empty:
+            print("No data found for the ticker. Please check the stock symbol and try again.")
+        else:
+            print("Data retrieval successful!")
+            print(f"Retrieved {len(stock_data)} data points")
+        
+        return stock_data
+    except Exception as e:
+        print(f"Error fetching data: {str(e)}")
+        print("Please try again with a valid stock symbol.")
+        return pd.DataFrame()
 
 if __name__ == '__main__':
     # Step 1: Get user inputs

@@ -213,11 +213,10 @@ class TechnicalAnalyzer:
         price_change = ((current_price - df['Close'].iloc[-2]) / df['Close'].iloc[-2]) * 100
         
         # Get last 3 days' prices
-        last_3_days = df['Close'].tail(3)
-        last_3_days_dates = df.index.tail(3)
+        last_3_days_data = df.tail(3)
         last_3_days_prices = "\n".join([
             f"- {date.strftime('%Y-%m-%d')}: ${price:.2f}"
-            for date, price in zip(last_3_days_dates, last_3_days)
+            for date, price in zip(last_3_days_data.index, last_3_days_data['Close'])
         ])
         
         # Create analysis text for LLM

@@ -3,7 +3,7 @@ openai>=1.12.0
 langchain-google-genai>=0.0.5
 langchain-groq>=0.0.1
 langchain-community>=0.0.10
-yfinance>=0.2.36
+yfinance
 ta>=0.11.0
 statsmodels>=0.14.1
 tensorflow>=2.15.0
