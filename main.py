@@ -2,6 +2,7 @@ from get_data import get_user_input, fetch_stock_data
 from sentiment import perform_sentiment_analysis_multi
 from fundamental_analysis import fundamental_analyzer
 from technical_analysis import technical_analyzer
+from predictive_analysis import analyze_predictions
 from dotenv import load_dotenv
 import os
 import pandas as pd
@@ -93,6 +94,13 @@ def main():
                     print(f"{key}: {value}")
             print("\nTechnical Analysis Results:")
             print(technical_result)
+            
+            # Perform predictive analysis
+            print("\nPerforming Predictive Analysis...")
+            predictive_result = analyze_predictions(ticker, invest_duration, stock_data)
+            print("\nPredictive Analysis Results:")
+            print(predictive_result)
+            print("\nForecast plot has been saved as 'forecast_plot.png'")
             
     except ValueError as ve:
         print(f"Configuration Error: {str(ve)}")
