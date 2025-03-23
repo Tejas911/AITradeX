@@ -7,7 +7,8 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import warnings
-from llm import sentiment_analyzer
+from utils.llm_handler import sentiment_analyzer
+from config.settings import *
 
 warnings.filterwarnings('ignore')
 
@@ -59,7 +60,7 @@ class PredictiveAnalyzer:
             prophet_data = pd.DataFrame({
                 'ds': self.data.index,
                 'y': self.data.values
-            })
+            }).reset_index(drop=True)  # Reset index to ensure proper dimensionality
             
             self.prophet_model = Prophet(daily_seasonality=True)
             self.prophet_model.fit(prophet_data)

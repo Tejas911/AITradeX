@@ -4,7 +4,8 @@ import yfinance as yf
 from typing import Dict, Any, Tuple, List
 import talib
 from datetime import datetime, timedelta
-from llm import sentiment_analyzer
+from utils.llm_handler import sentiment_analyzer
+from config.settings import *
 
 class TechnicalAnalyzer:
     def __init__(self):

@@ -1,8 +1,9 @@
-from get_data import get_user_input, fetch_stock_data
-from sentiment import perform_sentiment_analysis_multi
-from fundamental_analysis import fundamental_analyzer
-from technical_analysis import technical_analyzer
-from predictive_analysis import analyze_predictions
+from utils.data_fetcher import get_user_input, fetch_stock_data
+from analysis.sentiment import perform_sentiment_analysis_multi
+from analysis.fundamental import fundamental_analyzer
+from analysis.technical import technical_analyzer
+from analysis.predictive import analyze_predictions
+from config.settings import *
 from dotenv import load_dotenv
 import os
 import pandas as pd
@@ -19,11 +20,19 @@ def load_api_keys():
     
     return google_api_key, groq_api_key
 
+def ensure_data_directory():
+    """Ensure the data directory exists"""
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
+
 def main():
     print("Welcome to Stock Analysis System")
     print("=" * 30)
     
     try:
+        # Ensure data directory exists
+        ensure_data_directory()
+        
         # Load API keys
         google_api_key, groq_api_key = load_api_keys()
         print("API keys loaded successfully")
@@ -33,7 +42,7 @@ def main():
         
         # Fetch historical stock data
         stock_data = fetch_stock_data(ticker, training_period_days)
-        stock_data.to_csv('stock_data.csv')
+        stock_data.to_csv(STOCK_DATA_FILE)
         if not stock_data.empty:
             print("\nData Analysis Summary:")
             print(f"Total data points: {len(stock_data)}")
@@ -100,7 +109,7 @@ def main():
             predictive_result = analyze_predictions(ticker, invest_duration, stock_data)
             print("\nPredictive Analysis Results:")
             print(predictive_result)
-            print("\nForecast plot has been saved as 'forecast_plot.png'")
+            print(f"\nForecast plot has been saved as '{FORECAST_PLOT_FILE}'")
             
     except ValueError as ve:
         print(f"Configuration Error: {str(ve)}")
