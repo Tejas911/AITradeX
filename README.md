@@ -9,7 +9,6 @@ A comprehensive stock analysis system that combines technical, fundamental, and 
 - Sentiment Analysis
 - Predictive Modeling (ARIMA, SARIMA, Prophet)
 - AI-Powered Recommendations
-- Interactive Visualization
 
 ## Project Structure
 
