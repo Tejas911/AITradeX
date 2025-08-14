@@ -4,7 +4,7 @@ import numpy as np
 from utils.llm_handler import sentiment_analyzer
 from config.settings import *
 from typing import Dict, Any, Tuple
-
+# This module provides functionality for fundamental analysis of stocks using financial metrics and ratios.
 class FundamentalAnalyzer:
     def __init__(self):
         self.llm = sentiment_analyzer
